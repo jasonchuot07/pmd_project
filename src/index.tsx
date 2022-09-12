@@ -3,13 +3,30 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {ApolloClient, InMemoryCache, ApolloProvider, HttpLink, from} from '@apollo/client'
+import {offsetLimitPagination} from '@apollo/client/utilities';
+
+export const client = new ApolloClient({
+  uri: 'https://gql-technical-assignment.herokuapp.com/graphql',
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          launchesPast: offsetLimitPagination()
+        }
+      }
+    }
+  }),
+})
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
   </React.StrictMode>
 );
 
