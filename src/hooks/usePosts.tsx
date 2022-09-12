@@ -2,7 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 
 export const GET_POSTS = gql`
     query {
-        firstPageArticles {
+        firstPageArticles{
             id
             author
             createdAt
@@ -18,5 +18,5 @@ export const GET_POSTS = gql`
 
 export const FetchPosts = () => {
     const {error, loading, data } = useQuery(GET_POSTS)
-    return {error, loading, data}
+    return {ferror: error, floading:loading, fdata:data}
 }
