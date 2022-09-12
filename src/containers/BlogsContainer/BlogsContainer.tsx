@@ -13,7 +13,7 @@ export const client = new ApolloClient({
       typePolicies: {
         Query: {
           fields: {
-            launchesPast: offsetLimitPagination()
+            firstPageArticles: offsetLimitPagination()
           }
         }
       }
@@ -32,8 +32,7 @@ const BlogsContainer = () => {
     
 
     const PAGE_QUERY = gql`
-        query {
-            firstPageArticles {
+        query firstPageArticles($offset: Int!, $limit: Int!) {
                 id
                 author
                 createdAt
@@ -44,15 +43,10 @@ const BlogsContainer = () => {
                 type
                 url
             }
-        }
     `
-    const {data, loading, error, fetchMore, variables, networkStatus} = useQuery(
-        PAGE_QUERY,
-        {
-            client,
-            notifyOnNetworkStatusChange: true,
-        }
-    )
+    const {data, loading, error, fetchMore, variables, networkStatus} = useQuery(PAGE_QUERY, {
+        client
+    })
 
     if (loading) {
         return <div>Loading...</div>;
