@@ -8,6 +8,7 @@ import {
   Route,
   Navigate
 } from "react-router-dom";
+import Footer from './containers/Footer/Footer';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
           <Route path='/blog/:blogId' element={<PageBody />}/>
         </Routes>
       </Router>
+      <Footer />
     </div>
   );
 }

@@ -35,10 +35,15 @@ const BlogsContainer = () => {
         }
       }
     `
-    const {data, loading, error} = useQuery(GET_POSTS)
+    const {data, loading, error, fetchMore} = useQuery(GET_POSTS, {
+        variables: {
+            page: page
+        }
+    })
+
     if (floading) {
         return <div>Loading...</div>;
-      }
+    }
     
       if (ferror) {
         return <div>{ferror.message}</div>;
@@ -46,12 +51,28 @@ const BlogsContainer = () => {
     
     return (
         <Container>
-          {fdata && fdata.firstPageArticles.map((page:any, i:any) => (
-            <Post key={page.title} title={page.title} text={page.text} url={page.url} />
-          ))}
-          {data && data.retrievePageArticles.map((page:any, i:any) => (
-            <Post key={page.title} title={page.title} text={page.text} url={page.url} />
-          ))}
+            {fdata && fdata.firstPageArticles.map((page:any, i:any) => (
+                <Post key={page.title} title={page.title} text={page.text} url={page.url} />
+            ))}
+            {data && data.retrievePageArticles.map((page:any, i:any) => (
+                <Post key={page.title} title={page.title} text={page.text} url={page.url} />
+            ))}
+
+            {loading && <div>Loading....</div> }
+
+            <InView
+                onChange={async (inView) => {
+                if (inView) {
+                    setPage(page+1)
+                    console.log('Loading new ...')
+                    const result = await fetchMore({
+                    variables: {
+                        page: page+1
+                    }
+                    })
+                }
+                }}
+            />
         </Container>
     )
 }
